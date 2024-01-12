@@ -1,125 +1,624 @@
+// import 'package:flutter/foundation.dart';
+// import 'package:flutter/material.dart';
+//
+// void main() => runApp(new MaterialApp(
+//       home: new MyApp(),
+//     ));
+//
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   State<MyApp> createState() => _MyApState();
+// }
+//
+// class _MyApState extends State<MyApp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         leading: IconButton(
+//           icon: const Icon(Icons.car_rental_sharp),
+//           onPressed: () {
+//             if (kDebugMode) {
+//               print('OH oo...');
+//             }
+//           },
+//         ),
+//         title: const Text('Lets Go...'),
+//         actions: const <Widget>[
+//           IconButton(
+//             icon: Icon(Icons.search),
+//             onPressed: () {},
+//           ),
+//           IconButton(
+//             icon: Icon(Icons.miscellaneous_services),
+//             onPressed: () {},
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+//
+// void main() {
+//   runApp(const MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   // const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       home: Text('My Mom'),
+//     );
+//   }
+// }
+
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return const MaterialApp(
+//       home: Column(
+//         children: <Widget>[
+//           SafeArea(child: Text('First Build')),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+//
+// import 'login_page.dart';
+//
+// void main() {
+//   runApp(MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'AI Chat Assistant',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: ChatScreen(),
+//     );
+//   }
+// }
+//
+// class ChatScreen extends StatefulWidget {
+//   @override
+//   State createState() => ChatScreenState();
+// }
+//
+// class ChatScreenState extends State<ChatScreen> {
+//   final TextEditingController _messageController = TextEditingController();
+//   final List<ChatMessage> _messages = [];
+//   bool isBotTyping = false;
+//
+//   void _handleLogin(BuildContext context) {
+//     // Navigate to the login page
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(builder: (context) => LoginPage()),
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('AI Chat Assistant'),
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.login),
+//             onPressed: () {
+//               // Add your login logic here
+//               _handleLogin(context);
+//               // For simplicity, a dialog is shown in this example
+//               // showDialog(
+//               //   context: context,
+//               //   builder: (BuildContext context) {
+//               //     return AlertDialog(
+//               //       title: Text("Login"),
+//               //       content: Text("Implement your login logic here."),
+//               //       actions: [
+//               //         TextButton(
+//               //           onPressed: () {
+//               //             Navigator.pop(context);
+//               //           },
+//               //           child: Text("Close"),
+//               //         ),
+//               //       ],
+//               //     );
+//               //   },
+//               // );
+//             },
+//           ),
+//         ],
+//       ),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//               reverse: true, // Display messages in reverse order
+//               itemCount: _messages.length,
+//               itemBuilder: (context, index) {
+//                 return _messages[index];
+//               },
+//             ),
+//           ),
+//           _buildMessagePrompt(),
+//           _buildMessageComposer(),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Widget _buildMessagePrompt() {
+//     return Container(
+//       padding: EdgeInsets.all(8.0),
+//       child: _messages.isNotEmpty && !_messages.first.isUser
+//           ? Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 isBotTyping
+//                     ? Row(
+//                         children: [
+//                           CircularProgressIndicator(),
+//                           SizedBox(width: 8.0),
+//                           Text('AI Assistant is typing...'),
+//                         ],
+//                       )
+//                     : Container(),
+//                 SizedBox(height: 5.0),
+//               ],
+//             )
+//           : Container(),
+//     );
+//   }
+//
+//   Widget _buildMessageComposer() {
+//     return Container(
+//       padding: EdgeInsets.all(8.0),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//       ),
+//       child: Row(
+//         children: [
+//           Expanded(
+//             child: TextField(
+//               controller: _messageController,
+//               textInputAction: TextInputAction.send,
+//               onSubmitted: _handleSubmitted,
+//               decoration: InputDecoration.collapsed(
+//                 hintText: 'Send a FAQ Prompt...',
+//               ),
+//             ),
+//           ),
+//           IconButton(
+//             icon: Icon(Icons.send),
+//             onPressed: () {
+//               _handleSubmitted(_messageController.text);
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+//
+//   void _handleSubmitted(String text) {
+//     _messageController.clear();
+//     ChatMessage message = ChatMessage(
+//       text: text,
+//       isUser: true,
+//     );
+//     setState(() {
+//       _messages.insert(0, message);
+//     });
+//     _handleAIDummyResponse();
+//   }
+//
+//   void _handleAIDummyResponse() {
+//     setState(() {
+//       isBotTyping = true;
+//     });
+//     Future.delayed(Duration(seconds: 2), () {
+//       ChatMessage aiMessage = ChatMessage(
+//         text: "This is a dummy AI response.",
+//         isUser: false,
+//       );
+//
+//       setState(() {
+//         isBotTyping = false;
+//         // _messages.removeAt(0); // Remove the typing prompt
+//         _messages.insert(0, aiMessage);
+//       });
+//     });
+//   }
+// }
+//
+// class ChatMessage extends StatelessWidget {
+//   final String text;
+//   final bool isUser;
+//
+//   ChatMessage({required this.text, required this.isUser});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       margin: const EdgeInsets.symmetric(vertical: 10.0),
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           isUser
+//               ? CircleAvatar(
+//                   child: Icon(Icons.person),
+//                 )
+//               : CircleAvatar(
+//                   child: Icon(Icons.android),
+//                 ),
+//           SizedBox(width: 10.0),
+//           Expanded(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   isUser ? 'You' : 'AI Assistant',
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                 ),
+//                 SizedBox(height: 5.0),
+//                 Text(text),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+//--------------------------------------------------------------------------------------------------
+
 import 'package:flutter/material.dart';
 
+import 'signup_page.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'AI Chat Assistant',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ChatScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class ChatScreen extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State createState() => ChatScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class ChatScreenState extends State<ChatScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  final List<ChatMessage> _messages = [];
+  bool isBotTyping = false;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void _handleLogin(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return LoginDialog();
+      },
+    );
+  }
+
+  void _handleSignup() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignupPage()),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('AI Chat Assistant'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.login),
+            onPressed: () {
+              // Add your login logic here
+              _handleLogin(context);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.person_add),
+            onPressed: _handleSignup,
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              reverse: true, // Display messages in reverse order
+              itemCount: _messages.length,
+              itemBuilder: (context, index) {
+                return _messages[index];
+              },
             ),
+          ),
+          _buildMessagePrompt(),
+          _buildMessageComposer(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMessagePrompt() {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: _messages.isNotEmpty && !_messages.first.isUser
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                isBotTyping
+                    ? Row(
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(width: 8.0),
+                          Text('AI Assistant is typing...'),
+                        ],
+                      )
+                    : Container(),
+                SizedBox(height: 5.0),
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  Widget _buildMessageComposer() {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _messageController,
+              textInputAction: TextInputAction.send,
+              onSubmitted: _handleSubmitted,
+              decoration: InputDecoration.collapsed(
+                hintText: 'Send a FAQ Prompt...',
+              ),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.send),
+            onPressed: () {
+              _handleSubmitted(_messageController.text);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _handleSubmitted(String text) {
+    _messageController.clear();
+    ChatMessage message = ChatMessage(
+      text: text,
+      isUser: true,
+    );
+    setState(() {
+      _messages.insert(0, message);
+    });
+    _handleAIDummyResponse();
+  }
+
+  void _handleAIDummyResponse() {
+    setState(() {
+      isBotTyping = true;
+    });
+    Future.delayed(Duration(seconds: 2), () {
+      ChatMessage aiMessage = ChatMessage(
+        text: "This is a dummy AI response.",
+        isUser: false,
+      );
+
+      setState(() {
+        isBotTyping = false;
+        // _messages.removeAt(0); // Remove the typing prompt
+        _messages.insert(0, aiMessage);
+      });
+    });
+  }
+}
+
+class ChatMessage extends StatelessWidget {
+  final String text;
+  final bool isUser;
+
+  ChatMessage({required this.text, required this.isUser});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          isUser
+              ? CircleAvatar(
+                  child: Icon(Icons.person),
+                )
+              : CircleAvatar(
+                  child: Icon(Icons.android),
+                ),
+          SizedBox(width: 10.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isUser ? 'You' : 'AI Assistant',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 5.0),
+                Text(text),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// login_page.dart
+// import 'package:flutter/material.dart';
+
+class LoginDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              'Log In',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'By continuing, you agree to our User Agreement and acknowledge that you understand the Privacy Policy.',
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 32.0),
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Username',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                // Perform sign-in logic here
+                Navigator.pop(context);
+              },
+              child: Text('Log In'),
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildOAuthButton(
+                    'assets/google_logo.png', 'Continue with Google'),
+                SizedBox(width: 16.0),
+                _buildOAuthButton(
+                    'assets/apple_logo.png', 'Continue with Apple'),
+                SizedBox(width: 16.0),
+                _buildOAuthButton(
+                    'assets/mastek_logo.png', 'Continue with Mastek'),
+              ],
+            ),
+            SizedBox(height: 16.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Don't have an account?"),
+                TextButton(
+                  onPressed: () {
+                    // Navigate to the sign-up page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignupPage()),
+                    );
+                  },
+                  child: Text('Sign Up'),
+                ),
+              ],
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Widget _buildOAuthButton(String logoPath, String buttonText) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.grey[200],
+      ),
+      child: TextButton(
+        onPressed: () {
+          // Handle OAuth login logic
+        },
+        child: Row(
+          children: [
+            Image.asset(
+              logoPath,
+              height: 24.0,
+              width: 24.0,
+            ),
+            SizedBox(width: 8.0),
+            Text(buttonText),
+          ],
+        ),
+      ),
     );
   }
 }
